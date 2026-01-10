@@ -163,12 +163,15 @@ function edit(m) {
 }
 
 function confirm() {
-  fetch('/auth', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({pwd:pwd.value, mode, text:checkin?.value})
-  }).then(r=>{
-    if(r.ok) location.reload();
+  fetch('/checkin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      pwd: document.getElementById('pwd').value.trim(),
+      text: document.getElementById('checkin').value
+    })
+  }).then(r => {
+    if (r.ok) location.reload();
     else alert('密码错误');
   });
 }
@@ -253,16 +256,15 @@ function save(){
 });
 
 /* ---------- 接口 ---------- */
-app.post('/article', (req,res)=>{
-  if(req.body.pwd !== PASSWORD) return res.sendStatus(403);
+app.post('/checkin', (req, res) => {
+  if (String(req.body.pwd || '').trim() !== PASSWORD) {
+    return res.status(403).send('密码错误');
+  }
 
   const db = loadDB();
-  db.articles.unshift({
-    title: req.body.title || '无标题',
-    content: req.body.content || '',
-    date: today()
-  });
+  db.checkin[today()] = req.body.text || '';
   saveDB(db);
+
   res.sendStatus(200);
 });
 
