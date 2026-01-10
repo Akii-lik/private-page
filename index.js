@@ -51,38 +51,58 @@ app.get('/', (req, res) => {
 <style>
 body{
   margin:0;
-  font-family:-apple-system;
+  font-family:-apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
   background:linear-gradient(120deg,#c7e5ff,#fce7f3);
 }
+
 .container{
   max-width:800px;
   margin:auto;
   padding:24px;
 }
+
 .glass{
   background:rgba(255,255,255,.6);
   backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
   border-radius:18px;
   box-shadow:0 10px 30px rgba(0,0,0,.1);
 }
+
 .card{
   padding:16px;
   margin-bottom:16px;
 }
-.small{font-size:12px;color:#555;}
+
+.small{
+  font-size:12px;
+  color:#555;
+}
+
 button{
   border:none;
   border-radius:10px;
-  padding:6px 12px;
+  padding:8px 14px;
   cursor:pointer;
+  background:rgba(255,255,255,.8);
 }
-input,textarea{
+
+input, textarea{
   width:100%;
+  box-sizing:border-box;   /* ⭐ 防止溢出的关键 */
   border:none;
   border-radius:12px;
   padding:10px;
   margin-bottom:10px;
+  background:rgba(255,255,255,.85);
+  font-family:inherit;
 }
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
 .overlay{
   position:fixed;
   inset:0;
@@ -90,9 +110,12 @@ input,textarea{
   display:none;
   align-items:center;
   justify-content:center;
+  z-index:10;
 }
+
 .modal{
-  width:360px;
+  width:90%;
+  max-width:420px;
 }
 </style>
 </head>
