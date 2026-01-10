@@ -6,8 +6,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 const PASSWORD = '367208';
-const DB_FILE = './data.json';
-
+const DB_FILE = '/data/data.json';
 /* ---------- 工具 ---------- */
 function today() {
   return new Date().toISOString().slice(0, 10);
