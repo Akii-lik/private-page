@@ -154,8 +154,12 @@ function toggleAll() {
 }
 
 function edit(m) {
-  mode = m;
-  document.getElementById('overlay').style.display='flex';
+  if(m === 'article'){
+    location.href = '/editor';
+  }else{
+    mode = m;
+    document.getElementById('overlay').style.display='flex';
+  }
 }
 
 function confirm() {
@@ -177,13 +181,87 @@ function openArticle(i){
 </html>`);
 });
 
+app.get('/editor', (req, res) => {
+  res.send(`
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>写文章</title>
+<style>
+body{
+  margin:0;
+  font-family:-apple-system;
+  background:linear-gradient(120deg,#c7e5ff,#fce7f3);
+}
+.glass{
+  background:rgba(255,255,255,.6);
+  backdrop-filter:blur(20px);
+  border-radius:18px;
+  padding:20px;
+  max-width:700px;
+  margin:40px auto;
+}
+input,textarea{
+  width:100%;
+  border:none;
+  border-radius:12px;
+  padding:12px;
+  margin-bottom:12px;
+}
+button{
+  border:none;
+  padding:10px 16px;
+  border-radius:12px;
+  cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="glass">
+  <h2>✍ 写文章</h2>
+  <input id="title" placeholder="文章标题">
+  <textarea id="content" rows="10" placeholder="正文内容"></textarea>
+  <input id="pwd" placeholder="密码">
+  <button onclick="save()">保存</button>
+</div>
+
+<script>
+function save(){
+  fetch('/article', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      title: title.value,
+      content: content.value,
+      pwd: pwd.value
+    })
+  }).then(r=>{
+    if(r.ok){
+      location.href='/';
+    }else{
+      alert('密码错误');
+    }
+  });
+}
+</script>
+
+</body>
+</html>
+`);
+});
+
 /* ---------- 接口 ---------- */
-app.post('/auth', (req,res)=>{
+app.post('/article', (req,res)=>{
   if(req.body.pwd !== PASSWORD) return res.sendStatus(403);
+
   const db = loadDB();
-  if(req.body.mode==='checkin'){
-    db.checkin[today()] = req.body.text;
-  }
+  db.articles.unshift({
+    title: req.body.title || '无标题',
+    content: req.body.content || '',
+    date: today()
+  });
   saveDB(db);
   res.sendStatus(200);
 });
