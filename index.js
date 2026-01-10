@@ -13,8 +13,15 @@ function today() {
 }
 
 function loadData() {
-  if (!fs.existsSync(FILE)) return {};
-  return JSON.parse(fs.readFileSync(FILE, 'utf8'));
+  try {
+    if (!fs.existsSync(FILE)) return {};
+    const raw = fs.readFileSync(FILE, 'utf8');
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) {
+    console.error('Failed to load data.json:', e);
+    return {};
+  }
 }
 
 function saveData(data) {
@@ -72,7 +79,7 @@ app.get('/', (req, res) => {
   white-space: pre-wrap;
   font-size: 14px;
   margin: 0;
-｝
+}
 
 .today {
   background: #eef2ff;
@@ -85,7 +92,7 @@ app.get('/', (req, res) => {
   font-size: 13px;
   color: #4338ca;
   margin-bottom: 6px;
-｝
+}
 </style>
 </head>
 <body>
