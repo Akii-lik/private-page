@@ -33,29 +33,89 @@ app.get('/', (req, res) => {
     <textarea data-day="${d}" style="width:100%;height:80px">${data[d]}</textarea>
   `).join('');
 
-  res.send(`
-    <h3>📅 三日打卡</h3>
-    ${blocks}
-    <h4>${today()}</h4>
-    <textarea id="today" style="width:100%;height:80px"></textarea>
-    <br>
+ res.send(`
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #f5f6f8;
+    padding: 40px;
+  }
+
+  .card {
+    max-width: 700px;
+    margin: auto;
+    background: #fff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  }
+
+  h3 {
+    margin-top: 0;
+  }
+
+  h4 {
+    margin-bottom: 6px;
+    color: #555;
+  }
+
+  textarea {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 14px;
+    resize: vertical;
+  }
+
+  input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  button {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #4338ca;
+  }
+</style>
+
+<div class="card">
+  <h3>📅 三日打卡</h3>
+
+  ${blocks}
+
+  <h4>${today()}</h4>
+  <textarea id="today"></textarea>
+
+  <div style="margin-top:12px;">
     <input id="pwd" placeholder="密码">
     <button onclick="save()">保存</button>
+  </div>
+</div>
 
-    <script>
-      function save() {
-        fetch('/save', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            pwd: pwd.value,
-            text: today.value
-          })
-        }).then(()=>location.reload());
-      }
-    </script>
-  `);
-});
+<script>
+  function save() {
+    fetch('/save', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        pwd: pwd.value,
+        text: today.value
+      })
+    }).then(()=>location.reload());
+  }
+</script>
+`);
 
 // 保存今天的打卡
 app.post('/save', (req, res) => {
