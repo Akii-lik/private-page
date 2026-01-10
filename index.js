@@ -24,10 +24,16 @@ app.get('/', (req, res) => {
   const data = loadData();
   const days = Object.keys(data).sort().slice(-3);
 
- const blocks = days.map(d => `
-  <div class="history">
+const blocks = days.map(d => `
+  <div class="history" data-day="${d}">
     <div class="date">${d}</div>
-    <pre class="content">${data[d]}</pre>
+
+    <pre class="content" id="content-${d}">${data[d]}</pre>
+
+    <div class="actions">
+      <button onclick="edit('${d}')">修改</button>
+      <button onclick="removeDay('${d}')">删除</button>
+    </div>
   </div>
 `).join('');
   res.send(`
@@ -85,6 +91,15 @@ app.get('/', (req, res) => {
   color: #4338ca;
   margin-bottom: 6px;
 ｝
+
+.actions {
+  margin-top: 6px;
+}
+
+.actions button {
+  font-size: 12px;
+  margin-right: 6px;
+｝
 </style>
 </head>
 <body>
@@ -118,6 +133,37 @@ document.getElementById('saveBtn').onclick = function () {
     })
   }).then(() => location.reload());
 };
+
+// ✏️ 修改
+function edit(day) {
+  const oldText = document.getElementById('content-' + day).innerText;
+  const newText = prompt('修改记录：', oldText);
+  if (newText === null) return;
+
+  fetch('/edit', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      pwd: document.getElementById('pwd').value,
+      day,
+      text: newText
+    })
+  }).then(() => location.reload());
+}
+
+// 🗑️ 删除
+function removeDay(day) {
+  if (!confirm(`确定要删除 ${day} 的记录吗？`)) return;
+
+  fetch('/delete', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      pwd: document.getElementById('pwd').value,
+      day
+    })
+  }).then(() => location.reload());
+}
 </script>
 
 </body>
@@ -125,16 +171,25 @@ document.getElementById('saveBtn').onclick = function () {
 `);
 });
 
-app.post('/save', (req, res) => {
+// ✏️ 修改某一天
+app.post('/edit', (req, res) => {
   if (req.body.pwd !== PASSWORD) return res.sendStatus(403);
 
   const data = loadData();
-  data[today()] = req.body.text;
-
-  const keys = Object.keys(data).sort();
-  while (keys.length > 3) delete data[keys.shift()];
-
+  data[req.body.day] = req.body.text;
   saveData(data);
+
+  res.send('ok');
+});
+
+// 🗑️ 删除某一天
+app.post('/delete', (req, res) => {
+  if (req.body.pwd !== PASSWORD) return res.sendStatus(403);
+
+  const data = loadData();
+  delete data[req.body.day];
+  saveData(data);
+
   res.send('ok');
 });
 
