@@ -1,6 +1,7 @@
 {
-  "name": "private-page",
+  "name": "glass-blog",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "start": "node index.js"
   },
