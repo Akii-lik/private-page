@@ -256,15 +256,21 @@ function save(){
 });
 
 /* ---------- 接口 ---------- */
-app.post('/checkin', (req, res) => {
+app.post('/article', (req, res) => {
+  // ⭐ 统一密码校验（和三日打卡一模一样）
   if (String(req.body.pwd || '').trim() !== PASSWORD) {
     return res.status(403).send('密码错误');
   }
 
   const db = loadDB();
-  db.checkin[today()] = req.body.text || '';
-  saveDB(db);
 
+  db.articles.unshift({
+    title: req.body.title || '无标题',
+    content: req.body.content || '',
+    date: today()
+  });
+
+  saveDB(db);
   res.sendStatus(200);
 });
 
