@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 
 const FILE = 'data.json';
-const PASSWORD = '你自己设的密码';
+const PASSWORD = '367208';
 
 function today() {
   return new Date().toISOString().slice(0, 10);
@@ -24,11 +24,12 @@ app.get('/', (req, res) => {
   const data = loadData();
   const days = Object.keys(data).sort().slice(-3);
 
-  const blocks = days.map(d => `
-    <h4>${d}</h4>
-    <textarea>${data[d]}</textarea>
-  `).join('');
-
+ const blocks = days.map(d => `
+  <div class="history">
+    <div class="date">${d}</div>
+    <pre class="content">${data[d]}</pre>
+  </div>
+`).join('');
   res.send(`
 <!DOCTYPE html>
 <html>
@@ -53,17 +54,57 @@ app.get('/', (req, res) => {
     height: 80px;
     margin-bottom: 12px;
   }
+  .history {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.history .date {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.history .content {
+  white-space: pre-wrap;
+  font-size: 14px;
+  margin: 0;
+｝
+
+.today {
+  background: #eef2ff;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 16px;
+}
+
+.today-label {
+  font-size: 13px;
+  color: #4338ca;
+  margin-bottom: 6px;
+｝
 </style>
 </head>
 <body>
 
 <div class="card">
   <h3>📅 三日打卡</h3>
+
+  <!-- 历史记录 -->
   ${blocks}
-  <h4>${today()}</h4>
-  <textarea id="today"></textarea>
-  <input id="pwd" placeholder="密码">
-  <button id="saveBtn">保存</button>
+
+  <!-- 今天 -->
+  <div class="today">
+    <div class="today-label">✏️ 今天（${today()}）</div>
+    <textarea id="today"></textarea>
+
+    <div style="margin-top:8px;">
+      <input id="pwd" placeholder="密码">
+      <button id="saveBtn">保存</button>
+    </div>
+  </div>
 </div>
 
 <script>
