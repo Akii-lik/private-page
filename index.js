@@ -269,19 +269,34 @@ button{
 
 <script>
 function submit(){
-  fetch('/friend/submit',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      name: name.value,
-      relation: relation.value,
-      content: content.value
+  const nameEl = document.getElementById('name');
+  const relationEl = document.getElementById('relation');
+  const contentEl = document.getElementById('content');
+
+  if (!contentEl.value.trim()) {
+    alert('你还没有写想说的话。');
+    return;
+  }
+
+  fetch('/friend/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: nameEl.value.trim(),
+      relation: relationEl.value.trim(),
+      content: contentEl.value.trim()
     })
-  }).then(r=>{
-    if(r.ok){
-      alert('已经放好了。');
-      location.reload();
-    }
+  })
+  .then(r => {
+    if (!r.ok) throw new Error('提交失败');
+    alert('已经放好了。');
+    nameEl.value = '';
+    relationEl.value = '';
+    contentEl.value = '';
+  })
+  .catch(err => {
+    alert('刚刚没有成功放下，再试一次吧。');
+    console.error(err);
   });
 }
 </script>
