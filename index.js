@@ -131,6 +131,14 @@ textarea{
   ${list}
   <button onclick="openNew()">➕ 新记录</button>
 
+<hr style="margin:40px 0; opacity:.3">
+
+<h3 style="font-weight:normal">☕ 朋友来坐过</h3>
+
+<div id="friends" style="opacity:.5">
+  <!-- 这里以后会显示朋友的留言 -->
+</div>
+
   <!-- 👇 这里是新加的 -->
   <div style="margin-top:40px; font-size:13px; opacity:.6">
     <a href="/friends">朋友可以来坐一会儿 →</a>
