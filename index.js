@@ -200,6 +200,39 @@ app.get('/records', (req, res) => {
 <meta charset="UTF-8">
 <title>我的记录</title>
 <style>
+
+.top-nav{
+  position:fixed;
+  top:16px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:14px;
+  padding:10px 14px;
+  background:rgba(255,255,255,.55);
+  backdrop-filter:blur(18px);
+  border-radius:18px;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+  z-index:100;
+}
+
+.nav-btn{
+  width:40px;
+  height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  color:#333;
+  opacity:.75;
+  transition:.2s;
+}
+
+.nav-btn:hover{
+  opacity:1;
+  background:rgba(255,255,255,.6);
+}
+
 body{
   margin:0;
   font-family:-apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
