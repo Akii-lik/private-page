@@ -136,7 +136,7 @@ textarea{
 <h3 style="font-weight:normal">喜欢的图</h3>
 
 <div class="glass card">
-  < img src="https://files.catbox.moe/7p4mqe.jpeg"
+  <img src="https://files.catbox.moe/7p4mqe.jpeg"
        style="max-width:100%; border-radius:14px;">
   <div class="small">漂亮宝宝</div>
 </div>
