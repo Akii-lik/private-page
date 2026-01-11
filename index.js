@@ -479,10 +479,19 @@ function uploadImage(){
     }
 
     const imgBox = document.getElementById('imgResult');
-    imgBox.innerHTML = `
-      <img src="${data.secure_url}" style="max-width:100%; border-radius:14px; margin-top:10px;">
-      <div class="small">已上传</div>
-    `;
+   const img = document.createElement('img');
+img.src = data.secure_url;
+img.style.maxWidth = '100%';
+img.style.borderRadius = '14px';
+img.style.marginTop = '10px';
+
+const text = document.createElement('div');
+text.className = 'small';
+text.innerText = '已上传';
+
+imgBox.innerHTML = '';
+imgBox.appendChild(img);
+imgBox.appendChild(text);
   })
   .catch(() => {
     alert('上传出错');
