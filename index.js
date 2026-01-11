@@ -4,6 +4,20 @@ const fs = require('fs');
 const app = express();
 app.use(express.json());
 
+const topNav = `
+<div class="top-nav">
+  <a href="/">
+    <img src="https://raw.githubusercontent.com/Akii-lik/my-blog-images/main/home.svg">
+  </a>
+  <a href="/records">
+    <img src="https://raw.githubusercontent.com/Akii-lik/my-blog-images/main/records.svg">
+  </a>
+  <a href="/gallery">
+    <img src="https://raw.githubusercontent.com/Akii-lik/my-blog-images/main/gallery.svg">
+  </a>
+</div>
+`;
+
 const PORT = process.env.PORT || 3000;
 const PASSWORD = '367208';
 const DB_FILE = '/data/data.json'; // ⚠️ 如果你还没用 Volume，可先改成 './data.json'
@@ -108,6 +122,7 @@ h2{
 </style>
 </head>
 <body>
+${topNav}
 
 <div class="glass">
   <div class="hero">
