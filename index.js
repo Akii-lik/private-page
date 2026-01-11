@@ -306,6 +306,30 @@ function submit(){
 `);
 });
 
+// ===== 朋友提交留言 =====
+app.post('/friend/submit', (req, res) => {
+  const db = loadDB();
+
+  const name = (req.body.name || '').trim();
+  const relation = (req.body.relation || '').trim();
+  const content = (req.body.content || '').trim();
+
+  if (!content) {
+    return res.status(400).send('缺少内容');
+  }
+
+  db.friendCards.unshift({
+    name,
+    relation,
+    content,
+    date: new Date().toLocaleDateString(),
+    approved: false
+  });
+
+  saveDB(db);
+  res.sendStatus(200);
+});
+
 // ===== 朋友留言管理页（仅你自己）=====
 app.get('/friend/admin', (req, res) => {
   const db = loadDB();
