@@ -336,6 +336,13 @@ textarea{
 <h3 style="font-weight:normal">喜欢的图</h3>
 
 <div class="glass card">
+  <input type="file" id="imgUpload" accept="image/*">
+  <button onclick="uploadImage()">上传图片</button>
+
+  <div id="imgResult" style="margin-top:12px;"></div>
+</div>
+
+<div class="glass card">
   <img src="https://raw.githubusercontent.com/Akii-lik/my-blog-images/main/68f7dd898e7b6bc93c515152974b8d72.jpg"
        style="max-width:100%; border-radius:14px;">
   <div class="small">漂亮宝宝</div>
@@ -447,6 +454,40 @@ function remove(i){
       }
     });
 })();
+
+function uploadImage(){
+  const fileInput = document.getElementById('imgUpload');
+  if (!fileInput.files.length) {
+    alert('先选一张图片');
+    return;
+  }
+
+  const file = fileInput.files[0];
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', 'blog_upload');
+
+  fetch('https://api.cloudinary.com/v1_1/db72mthxr/image/upload', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (!data.secure_url) {
+      alert('上传失败');
+      return;
+    }
+
+    const imgBox = document.getElementById('imgResult');
+    imgBox.innerHTML = `
+      < img src="${data.secure_url}" style="max-width:100%; border-radius:14px; margin-top:10px;">
+      <div class="small">已上传</div>
+    `;
+  })
+  .catch(() => {
+    alert('上传出错');
+  });
+}
 </script>
 
 </body>
