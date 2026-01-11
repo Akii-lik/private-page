@@ -4,20 +4,6 @@ const fs = require('fs');
 const app = express();
 app.use(express.json());
 
-const topNav = `
-<div class="top-nav">
-  <a href="/">
-    <img src="https://raw.githubusercontent.com/Akii-lik/my-blog-images/main/home.svg">
-  </a>
-  <a href="/records">
-    <img src="https://raw.githubusercontent.com/Akii-lik/my-blog-images/main/records.svg">
-  </a>
-  <a href="/gallery">
-    <img src="https://raw.githubusercontent.com/Akii-lik/my-blog-images/main/gallery.svg">
-  </a>
-</div>
-`;
-
 const PORT = process.env.PORT || 3000;
 const PASSWORD = '367208';
 const DB_FILE = '/data/data.json'; // ⚠️ 如果你还没用 Volume，可先改成 './data.json'
@@ -119,9 +105,63 @@ h2{
 .enter:hover{
   background:rgba(255,255,255,.95);
 }
+
+.top-nav{
+  position:fixed;
+  top:16px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:14px;
+  padding:10px 14px;
+  background:rgba(255,255,255,.55);
+  backdrop-filter:blur(18px);
+  border-radius:18px;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+  z-index:100;
+}
+
+.nav-btn{
+  width:40px;
+  height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  color:#333;
+  opacity:.75;
+  transition:.2s;
+}
+
+.nav-btn:hover{
+  opacity:1;
+  background:rgba(255,255,255,.6);
+}
 </style>
 </head>
 <body>
+
+<div class="top-nav">
+  <a href="/" class="nav-btn">
+    <!-- 回家 -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 10.5 12 3l9 7.5"/>
+      <path d="M9 22V12h6v10"/>
+    </svg>
+  </a>
+
+  <a href="/records" class="nav-btn">
+    <!-- 记录 -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+      <path d="M4 4.5A2.5 2.5 0 0 1 6.5 7H20"/>
+      <path d="M20 22V2"/>
+    </svg>
+  </a>
+</div>
+
 ${topNav}
 
 <div class="glass">
@@ -143,7 +183,7 @@ ${topNav}
   `);
 });
 
-/* ---------- 首页 ---------- */
+/* ---------- 记录页 ---------- */
 app.get('/records', (req, res) => {
   const db = loadDB();
 
@@ -233,6 +273,27 @@ textarea{
 </style>
 </head>
 <body>
+
+<div class="top-nav">
+  <a href="/" class="nav-btn">
+    <!-- 回家 -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 10.5 12 3l9 7.5"/>
+      <path d="M9 22V12h6v10"/>
+    </svg>
+  </a>
+
+  <a href="/records" class="nav-btn">
+    <!-- 记录 -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+      <path d="M4 4.5A2.5 2.5 0 0 1 6.5 7H20"/>
+      <path d="M20 22V2"/>
+    </svg>
+  </a>
+</div>
 
 <div class="container">
   <h2>📒 我的记录</h2>
