@@ -162,8 +162,6 @@ h2{
   </a>
 </div>
 
-${topNav}
-
 <div class="glass">
   <div class="hero">
     <!-- 这里放你想展示的图片 -->
