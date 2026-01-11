@@ -363,6 +363,68 @@ app.get('/friend/list', (req, res) => {
   res.json(db.friendCards.filter(c => c.approved));
 });
 
+// ===== 审核通过朋友留言 =====
+app.post('/friend/approve', (req, res) => {
+  if (!checkPassword(req, res)) return;
+
+  const db = loadDB();
+  const index = req.body.index;
+
+  if (db.friendCards[index]) {
+    db.friendCards[index].approved = true;
+    saveDB(db);
+    res.sendStatus(200);
+  } else {
+    res.status(400).send('不存在的留言');
+  }
+});
+
+app.get('/friend/admin', (req, res) => {
+  const db = loadDB();
+
+  res.send(`
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>朋友留言审核</title>
+</head>
+<body style="font-family:-apple-system; padding:40px">
+
+<h2>📝 待审核的留言</h2>
+
+${db.friendCards.map((c, i) => `
+  <div style="border:1px solid #ddd; padding:12px; margin-bottom:10px">
+    <b>${c.name}</b> ${c.relation || ''}<br>
+    <pre>${c.content}</pre>
+    状态：${c.approved ? '✅ 已展示' : '⏳ 未审核'}
+    <br><br>
+    ${!c.approved ? `
+      <input placeholder="密码" id="pwd${i}">
+      <button onclick="approve(${i})">通过</button>
+    ` : ''}
+  </div>
+`).join('')}
+
+<script>
+function approve(i){
+  const pwd = document.getElementById('pwd'+i).value;
+  fetch('/friend/approve',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ pwd, index:i })
+  }).then(r=>{
+    if(r.ok) location.reload();
+    else alert('密码错误');
+  });
+}
+</script>
+
+</body>
+</html>
+`);
+});
+
 /* ---------- 启动 ---------- */
 app.listen(PORT,'0.0.0.0',()=>{
   console.log('Server running on',PORT);
