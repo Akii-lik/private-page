@@ -35,8 +35,58 @@ function checkPassword(req, res) {
   return true;
 }
 
-/* ---------- 首页 ---------- */
+/* ---------- 新首页 ---------- */
 app.get('/', (req, res) => {
+  res.send(`
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>回家</title>
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:-apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  background:linear-gradient(120deg,#c7e5ff,#fce7f3);
+}
+.glass{
+  background:rgba(255,255,255,.6);
+  backdrop-filter:blur(20px);
+  border-radius:24px;
+  padding:40px 50px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
+a{
+  display:inline-block;
+  margin-top:20px;
+  text-decoration:none;
+  color:#333;
+  opacity:.8;
+}
+</style>
+</head>
+<body>
+
+<div class="glass">
+  <h2>回家了</h2>
+  <div style="opacity:.6; margin-top:8px">
+    这里是一个只属于你的地方
+  </div>
+  <a href="/records">进入记录 →</a>
+</div>
+
+</body>
+</html>
+  `);
+});
+
+/* ---------- 首页 ---------- */
+app.get('/records', (req, res) => {
   const db = loadDB();
 
   const list = db.records.map((r, i) => `
