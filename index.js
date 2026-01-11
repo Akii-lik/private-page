@@ -105,67 +105,14 @@ h2{
 .enter:hover{
   background:rgba(255,255,255,.95);
 }
-
-.top-nav{
-  position:fixed;
-  top:16px;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  gap:14px;
-  padding:10px 14px;
-  background:rgba(255,255,255,.55);
-  backdrop-filter:blur(18px);
-  border-radius:18px;
-  box-shadow:0 8px 24px rgba(0,0,0,.08);
-  z-index:100;
-}
-
-.nav-btn{
-  width:40px;
-  height:40px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:12px;
-  color:#333;
-  opacity:.75;
-  transition:.2s;
-}
-
-.nav-btn:hover{
-  opacity:1;
-  background:rgba(255,255,255,.6);
-}
 </style>
 </head>
 <body>
 
-<div class="top-nav">
-  <a href="/" class="nav-btn">
-    <!-- 回家 -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 10.5 12 3l9 7.5"/>
-      <path d="M9 22V12h6v10"/>
-    </svg>
-  </a>
-
-  <a href="/records" class="nav-btn">
-    <!-- 记录 -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-      <path d="M4 4.5A2.5 2.5 0 0 1 6.5 7H20"/>
-      <path d="M20 22V2"/>
-    </svg>
-  </a>
-</div>
-
 <div class="glass">
   <div class="hero">
     <!-- 这里放你想展示的图片 -->
-    <img src="https://raw.githubusercontent.com/Akii-lik/my-blog-images/main/shushuxingfu.jpg"/>
+    <img src="https://cdn.discordapp.com/attachments/1455421290679767101/1459804152698765454/laooshuxingfu.jpg?ex=69649c0f&is=69634a8f&hm=3479163e04f167d093b7a48b024ebc1145562ffda3b7916a0ce848496c6e4133"/>
   </div>
 
   <h2>Akira</h2>
@@ -181,7 +128,7 @@ h2{
   `);
 });
 
-/* ---------- 记录页 ---------- */
+/* ---------- 首页 ---------- */
 app.get('/records', (req, res) => {
   const db = loadDB();
 
@@ -200,39 +147,6 @@ app.get('/records', (req, res) => {
 <meta charset="UTF-8">
 <title>我的记录</title>
 <style>
-
-.top-nav{
-  position:fixed;
-  top:16px;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  gap:14px;
-  padding:10px 14px;
-  background:rgba(255,255,255,.55);
-  backdrop-filter:blur(18px);
-  border-radius:18px;
-  box-shadow:0 8px 24px rgba(0,0,0,.08);
-  z-index:100;
-}
-
-.nav-btn{
-  width:40px;
-  height:40px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:12px;
-  color:#333;
-  opacity:.75;
-  transition:.2s;
-}
-
-.nav-btn:hover{
-  opacity:1;
-  background:rgba(255,255,255,.6);
-}
-
 body{
   margin:0;
   font-family:-apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
@@ -305,27 +219,6 @@ textarea{
 </head>
 <body>
 
-<div class="top-nav">
-  <a href="/" class="nav-btn">
-    <!-- 回家 -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 10.5 12 3l9 7.5"/>
-      <path d="M9 22V12h6v10"/>
-    </svg>
-  </a>
-
-  <a href="/records" class="nav-btn">
-    <!-- 记录 -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-      <path d="M4 4.5A2.5 2.5 0 0 1 6.5 7H20"/>
-      <path d="M20 22V2"/>
-    </svg>
-  </a>
-</div>
-
 <div class="container">
   <h2>📒 我的记录</h2>
   ${list}
@@ -336,12 +229,7 @@ textarea{
 <h3 style="font-weight:normal">喜欢的图</h3>
 
 <div class="glass card">
- 
-  <div id="imgResult" style="margin-top:12px;"></div>
-</div>
-
-<div class="glass card">
-  <img src="https://raw.githubusercontent.com/Akii-lik/my-blog-images/main/68f7dd898e7b6bc93c515152974b8d72.jpg"
+  <img src="https://files.catbox.moe/7p4mqe.jpeg"
        style="max-width:100%; border-radius:14px;">
   <div class="small">漂亮宝宝</div>
 </div>
@@ -452,7 +340,6 @@ function remove(i){
       }
     });
 })();
-
 </script>
 
 </body>
