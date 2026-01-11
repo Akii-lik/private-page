@@ -204,6 +204,41 @@ function remove(i){
     else alert('密码错误');
   });
 }
+
+(function () {
+  fetch('/friend/list')
+    .then(function (res) { return res.json(); })
+    .then(function (list) {
+      var box = document.getElementById('friends');
+      if (!box) return;
+
+      if (!Array.isArray(list) || list.length === 0) {
+        box.innerHTML = '<div style="opacity:.5">还没有朋友来坐过。</div>';
+        return;
+      }
+
+      var html = '';
+      list.forEach(function (c) {
+        html +=
+          '<div class="glass card">' +
+            '<div class="small">' +
+              (c.name || '匿名') +
+              (c.relation ? ' · ' + c.relation : '') +
+              ' · ' + c.date +
+            '</div>' +
+            '<pre>' + c.content + '</pre>' +
+          '</div>';
+      });
+
+      box.innerHTML = html;
+    })
+    .catch(function () {
+      var box = document.getElementById('friends');
+      if (box) {
+        box.innerHTML = '<div style="opacity:.5">留言暂时无法加载。</div>';
+      }
+    });
+})();
 </script>
 
 </body>
