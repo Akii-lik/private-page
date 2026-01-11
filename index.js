@@ -112,10 +112,10 @@ h2{
 <div class="glass">
   <div class="hero">
     <!-- 这里放你想展示的图片 -->
-    < img src="https://cdn.discordapp.com/attachments/1455421290679767101/1459804152698765454/laooshuxingfu.jpg?ex=69649c0f&is=69634a8f&hm=3479163e04f167d093b7a48b024ebc1145562ffda3b7916a0ce848496c6e4133"/>
+    <img src="https://cdn.discordapp.com/attachments/1455421290679767101/1459804152698765454/laooshuxingfu.jpg?ex=69649c0f&is=69634a8f&hm=3479163e04f167d093b7a48b024ebc1145562ffda3b7916a0ce848496c6e4133"/>
   </div>
 
-  <h2>Akira blog</h2>
+  <h2>Akira</h2>
   <div class="desc">
     ⁺ ୨୧ ⊹心配事を書き留める⊹ ୨୧ ⁺
   </div>
