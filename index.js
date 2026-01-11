@@ -135,6 +135,39 @@ textarea{
 
 <h3 style="font-weight:normal">☕ 朋友来坐过</h3>
 
+<script>
+(function () {
+  fetch('/friend/list')
+    .then(res => res.json())
+    .then(list => {
+      const box = document.getElementById('friends');
+      if (!box) return;
+
+      if (!Array.isArray(list) || list.length === 0) {
+        box.innerHTML = '<div style="opacity:.5">还没有朋友来坐过。</div>';
+        return;
+      }
+
+      box.innerHTML = list.map(c => `
+        <div class="glass card">
+          <div class="small">
+            ${c.name || '匿名'}
+            ${c.relation ? ' · ' + c.relation : ''}
+            · ${c.date}
+          </div>
+          <pre>${c.content}</pre>
+        </div>
+      `).join('');
+    })
+    .catch(() => {
+      const box = document.getElementById('friends');
+      if (box) {
+        box.innerHTML = '<div style="opacity:.5">留言暂时无法加载。</div>';
+      }
+    });
+})();
+</script>
+
 <div id="friends" style="opacity:.5">
   <!-- 这里以后会显示朋友的留言 -->
 </div>
