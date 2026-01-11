@@ -131,39 +131,6 @@ textarea{
   ${list}
   <button onclick="openNew()">➕ 新记录</button>
 
-<hr style="margin:40px 0; opacity:.3">
-
-<h3 style="font-weight:normal">☕ 朋友来坐过</h3>
-
-<div id="friends"></div>
-
-<script>
-fetch('/friend/list')
-  .then(r => r.json())
-  .then(list => {
-    const box = document.getElementById('friends');
-
-    if (!list || list.length === 0) {
-      box.innerHTML = '<div style="opacity:.5">还没有人来坐过。</div>';
-      return;
-    }
-
-    box.innerHTML = list.map(c => `
-      <div class="glass card">
-        <div class="small">
-          ${c.name}${c.relation ? ' · ' + c.relation : ''} · ${c.date}
-        </div>
-        <pre>${c.content}</pre>
-      </div>
-    `).join('');
-  })
-  .catch(err => {
-    document.getElementById('friends').innerHTML =
-      '<div style="opacity:.5">朋友的留言暂时打不开。</div>';
-    console.error(err);
-  });
-</script>
-  
   <!-- 👇 这里是新加的 -->
   <div style="margin-top:40px; font-size:13px; opacity:.6">
     <a href="/friends">朋友可以来坐一会儿 →</a>
