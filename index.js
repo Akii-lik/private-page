@@ -480,7 +480,7 @@ function uploadImage(){
 
     const imgBox = document.getElementById('imgResult');
     imgBox.innerHTML = `
-      < img src="${data.secure_url}" style="max-width:100%; border-radius:14px; margin-top:10px;">
+      <img src="${data.secure_url}" style="max-width:100%; border-radius:14px; margin-top:10px;">
       <div class="small">已上传</div>
     `;
   })
