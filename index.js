@@ -10,11 +10,16 @@ const DB_FILE = '/data/data.json'; // ⚠️ 如果你还没用 Volume，可先�
 
 /* ---------- 工具 ---------- */
 function loadDB() {
-  if (!fs.existsSync(DB_FILE)) return { records: [] };
+  if (!fs.existsSync(DB_FILE)) {
+    return { records: [], friendCards: [] };
+  }
   try {
-    return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+    const db = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+    db.records = db.records || [];
+    db.friendCards = db.friendCards || [];
+    return db;
   } catch {
-    return { records: [] };
+    return { records: [], friendCards: [] };
   }
 }
 
@@ -192,6 +197,83 @@ function remove(i){
 </html>`);
 });
 
+// ===== 朋友来坐一会儿 =====
+app.get('/friends', (req, res) => {
+  res.send(`
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>来坐一会儿</title>
+<style>
+body{
+  font-family:-apple-system;
+  background:linear-gradient(120deg,#c7e5ff,#fce7f3);
+  padding:40px;
+}
+.card{
+  max-width:420px;
+  margin:auto;
+  background:rgba(255,255,255,.6);
+  backdrop-filter:blur(20px);
+  border-radius:18px;
+  padding:20px;
+}
+input,textarea{
+  width:100%;
+  box-sizing:border-box;
+  border:none;
+  border-radius:12px;
+  padding:10px;
+  margin-bottom:10px;
+}
+button{
+  border:none;
+  border-radius:10px;
+  padding:8px 14px;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <p>
+    你可以在这里留下一点话。<br>
+    不用写得很好，也不需要解释。<br>
+    如果你愿意留下名字，那会更好。
+  </p >
+
+  <input id="name" placeholder="你的名字">
+  <input id="relation" placeholder="关系（可选）">
+  <textarea id="content" rows="4" placeholder="想说的话"></textarea>
+
+  <button onclick="submit()">放在这里</button>
+</div>
+
+<script>
+function submit(){
+  fetch('/friend/submit',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      name: name.value,
+      relation: relation.value,
+      content: content.value
+    })
+  }).then(r=>{
+    if(r.ok){
+      alert('已经放好了。');
+      location.reload();
+    }
+  });
+}
+</script>
+
+</body>
+</html>
+`);
+});
+
 /* ---------- 保存 ---------- */
 app.post('/save', (req,res)=>{
   if(!checkPassword(req,res)) return;
@@ -222,6 +304,32 @@ app.post('/delete', (req,res)=>{
   saveDB(db);
   res.sendStatus(200);
 });
+
+// ===== 朋友提交卡片 =====
+app.post('/friend/submit', (req, res) => {
+  const db = loadDB();
+
+  if (!req.body.name || !req.body.content) {
+    return res.status(400).send('缺少内容');
+  }
+
+  db.friendCards.unshift({
+    name: req.body.name.trim(),
+    relation: req.body.relation || '',
+    content: req.body.content.trim(),
+    date: new Date().toLocaleDateString(),
+    approved: false
+  });
+
+  saveDB(db);
+  res.sendStatus(200);
+});
+
+// ===== 获取已展示的朋友卡片 =====
+app.get('/friend/list', (req, res) => {
+  const db = loadDB();
+  res.json(db.friendCards.filter(c => c.approved));
+}
 
 /* ---------- 启动 ---------- */
 app.listen(PORT,'0.0.0.0',()=>{
