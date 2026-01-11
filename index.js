@@ -253,14 +253,18 @@ button{
   <p>
     你可以在这里留下一点话。<br>
     不用写得很好，也不需要解释。<br>
-    如果你愿意留下名字，那会更好。
+    如果你愿意留下名字，那会更好。<br>
+    我会看到，也会认真读。<br>
+    谢谢你来坐一会儿。
   </p>
 
   <input id="name" placeholder="你的名字">
   <input id="relation" placeholder="关系（可选）">
   <textarea id="content" rows="4" placeholder="想说的话"></textarea>
 
-  <button onclick="submit()">放在这里</button>
+ <button onclick="submit()" style="position:relative; z-index:10;">
+  放在这里 ☁️
+</button>
 </div>
 
 <script>
