@@ -306,61 +306,91 @@ function submit(){
 `);
 });
 
-/* ---------- 保存 ---------- */
-app.post('/save', (req,res)=>{
-  if(!checkPassword(req,res)) return;
-
-  const db = loadDB();
-  const item = {
-    title: req.body.title || '无标题',
-    content: req.body.content || '',
-    date: new Date().toLocaleString()
-  };
-
-  if(req.body.index === null || req.body.index === undefined){
-    db.records.unshift(item);
-  }else{
-    db.records[req.body.index] = item;
-  }
-
-  saveDB(db);
-  res.sendStatus(200);
-});
-
-/* ---------- 删除 ---------- */
-app.post('/delete', (req,res)=>{
-  if(!checkPassword(req,res)) return;
-
-  const db = loadDB();
-  db.records.splice(req.body.index,1);
-  saveDB(db);
-  res.sendStatus(200);
-});
-
-// ===== 朋友提交卡片 =====
-app.post('/friend/submit', (req, res) => {
+// ===== 朋友留言管理页（仅你自己）=====
+app.get('/friend/admin', (req, res) => {
   const db = loadDB();
 
-  if (!req.body.name || !req.body.content) {
-    return res.status(400).send('缺少内容');
-  }
+  res.send(`
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>朋友留言管理</title>
+<style>
+body{
+  font-family:-apple-system;
+  background:#f5f6f8;
+  padding:40px;
+}
+.card{
+  max-width:600px;
+  margin:auto;
+}
+.item{
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:12px;
+  background:white;
+}
+small{color:#666}
+button{margin-right:8px}
+</style>
+</head>
+<body>
 
-  db.friendCards.unshift({
-    name: req.body.name.trim(),
-    relation: req.body.relation || '',
-    content: req.body.content.trim(),
-    date: new Date().toLocaleDateString(),
-    approved: false
+<div class="card">
+  <h2>🗂 朋友留言管理</h2>
+
+  ${db.friendCards.map((c, i) => `
+    <div class="item">
+      <b>${c.name}</b> ${c.relation || ''} <br>
+      <small>${c.date}</small>
+      <pre>${c.content}</pre>
+
+      状态：${c.approved ? '✅ 已展示' : '⏳ 未展示'}
+      <br><br>
+
+      <input id="pwd${i}" placeholder="密码">
+
+      ${!c.approved ? `
+        <button onclick="approve(${i})">通过</button>
+      ` : ''}
+
+      <button onclick="remove(${i})">删除</button>
+    </div>
+  `).join('')}
+</div>
+
+<script>
+function approve(i){
+  const pwd = document.getElementById('pwd'+i).value;
+  fetch('/friend/approve',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ pwd, index:i })
+  }).then(r=>{
+    if(r.ok) location.reload();
+    else alert('密码错误');
   });
+}
 
-  saveDB(db);
-  res.sendStatus(200);
-});
+function remove(i){
+  const pwd = document.getElementById('pwd'+i).value;
+  fetch('/friend/delete',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ pwd, index:i })
+  }).then(r=>{
+    if(r.ok) location.reload();
+    else alert('密码错误');
+  });
+}
+</script>
 
-// ===== 获取已展示的朋友卡片 =====
-app.get('/friend/list', (req, res) => {
-  const db = loadDB();
-  res.json(db.friendCards.filter(c => c.approved));
+</body>
+</html>
+`);
 });
 
 // ===== 审核通过朋友留言 =====
@@ -379,50 +409,26 @@ app.post('/friend/approve', (req, res) => {
   }
 });
 
-app.get('/friend/admin', (req, res) => {
+// ===== 删除朋友留言 =====
+app.post('/friend/delete', (req, res) => {
+  if (!checkPassword(req, res)) return;
+
   const db = loadDB();
+  const index = req.body.index;
 
-  res.send(`
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>朋友留言审核</title>
-</head>
-<body style="font-family:-apple-system; padding:40px">
+  if (db.friendCards[index]) {
+    db.friendCards.splice(index, 1);
+    saveDB(db);
+    res.sendStatus(200);
+  } else {
+    res.status(400).send('不存在的留言');
+  }
+});
 
-<h2>📝 待审核的留言</h2>
-
-${db.friendCards.map((c, i) => `
-  <div style="border:1px solid #ddd; padding:12px; margin-bottom:10px">
-    <b>${c.name}</b> ${c.relation || ''}<br>
-    <pre>${c.content}</pre>
-    状态：${c.approved ? '✅ 已展示' : '⏳ 未审核'}
-    <br><br>
-    ${!c.approved ? `
-      <input placeholder="密码" id="pwd${i}">
-      <button onclick="approve(${i})">通过</button>
-    ` : ''}
-  </div>
-`).join('')}
-
-<script>
-function approve(i){
-  const pwd = document.getElementById('pwd'+i).value;
-  fetch('/friend/approve',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({ pwd, index:i })
-  }).then(r=>{
-    if(r.ok) location.reload();
-    else alert('密码错误');
-  });
-}
-</script>
-
-</body>
-</html>
-`);
+// ===== 获取已展示的朋友留言 =====
+app.get('/friend/list', (req, res) => {
+  const db = loadDB();
+  res.json(db.friendCards.filter(c => c.approved));
 });
 
 /* ---------- 启动 ---------- */
