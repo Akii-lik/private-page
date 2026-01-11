@@ -35,7 +35,7 @@ function checkPassword(req, res) {
   return true;
 }
 
-/* ---------- 新首页 ---------- */
+/* ---------- 主页面 / 回家 ---------- */
 app.get('/', (req, res) => {
   res.send(`
 <!DOCTYPE html>
@@ -46,38 +46,81 @@ app.get('/', (req, res) => {
 <style>
 body{
   margin:0;
-  height:100vh;
+  min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
   font-family:-apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
   background:linear-gradient(120deg,#c7e5ff,#fce7f3);
 }
+
 .glass{
+  width:90%;
+  max-width:420px;
   background:rgba(255,255,255,.6);
   backdrop-filter:blur(20px);
-  border-radius:24px;
-  padding:40px 50px;
+  border-radius:28px;
+  padding:40px 28px;
   text-align:center;
   box-shadow:0 10px 30px rgba(0,0,0,.1);
 }
-a{
+
+.hero{
+  width:100%;
+  height:180px;
+  border-radius:18px;
+  background:#eee;
+  margin-bottom:20px;
+  overflow:hidden;
+}
+
+.hero img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+h2{
+  margin:0;
+  font-weight:500;
+}
+
+.desc{
+  margin-top:10px;
+  font-size:14px;
+  opacity:.65;
+}
+
+.enter{
   display:inline-block;
-  margin-top:20px;
+  margin-top:26px;
+  padding:12px 26px;
+  border-radius:16px;
+  background:rgba(255,255,255,.75);
   text-decoration:none;
   color:#333;
-  opacity:.8;
+  transition:.2s;
+}
+
+.enter:hover{
+  background:rgba(255,255,255,.95);
 }
 </style>
 </head>
 <body>
 
 <div class="glass">
-  <h2>回家了</h2>
-  <div style="opacity:.6; margin-top:8px">
-    这里是一个只属于你的地方
+  <div class="hero">
+    <!-- 这里放你想展示的图片 -->
+    < img src="https://cdn.discordapp.com/attachments/1455421290679767101/1459804152698765454/laooshuxingfu.jpg?ex=69649c0f&is=69634a8f&hm=3479163e04f167d093b7a48b024ebc1145562ffda3b7916a0ce848496c6e4133"/>
   </div>
-  <a href="/records">进入记录 →</a>
+
+  <h2>Akira blog</h2>
+  <div class="desc">
+    ⁺ ୨୧ ⊹心配事を書き留める⊹ ୨୧ ⁺
+  </div>
+
+  <a class="enter" href="/records">进入</a>
 </div>
 
 </body>
