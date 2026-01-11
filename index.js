@@ -204,7 +204,6 @@ function remove(i){
     else alert('密码错误');
   });
 }
-<script>
 fetch('/friend/list')
   .then(r => r.json())
   .then(list => {
@@ -235,7 +234,6 @@ fetch('/friend/list')
       box.innerHTML = '<div style="opacity:.5">朋友的留言暂时无法加载。</div>';
     }
   });
-</script>
 </script>
 
 </body>
