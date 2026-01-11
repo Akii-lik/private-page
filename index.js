@@ -130,6 +130,10 @@ textarea{
   <h2>📒 我的记录</h2>
   ${list}
   <button onclick="openNew()">➕ 新记录</button>
+  <!-- 👇 这里是新加的 -->
+  <div style="margin-top:40px; font-size:13px; opacity:.6">
+    <a href="/friends">朋友可以来坐一会儿 →</a>
+  </div>
 </div>
 
 <div class="overlay" id="overlay">
@@ -241,7 +245,7 @@ button{
     你可以在这里留下一点话。<br>
     不用写得很好，也不需要解释。<br>
     如果你愿意留下名字，那会更好。
-  </p >
+  </p>
 
   <input id="name" placeholder="你的名字">
   <input id="relation" placeholder="关系（可选）">
@@ -329,7 +333,7 @@ app.post('/friend/submit', (req, res) => {
 app.get('/friend/list', (req, res) => {
   const db = loadDB();
   res.json(db.friendCards.filter(c => c.approved));
-}
+});
 
 /* ---------- 启动 ---------- */
 app.listen(PORT,'0.0.0.0',()=>{
