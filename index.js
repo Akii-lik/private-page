@@ -453,41 +453,6 @@ function remove(i){
     });
 })();
 
-  const file = fileInput.files[0];
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('upload_preset', 'blog_upload');
-
-  fetch('https://api.cloudinary.com/v1_1/db72mthxr/image/upload', {
-    method: 'POST',
-    body: formData
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (!data.secure_url) {
-      alert('上传失败');
-      return;
-    }
-
-    const imgBox = document.getElementById('imgResult');
-   const img = document.createElement('img');
-img.src = data.secure_url;
-img.style.maxWidth = '100%';
-img.style.borderRadius = '14px';
-img.style.marginTop = '10px';
-
-const text = document.createElement('div');
-text.className = 'small';
-text.innerText = '已上传';
-
-imgBox.innerHTML = '';
-imgBox.appendChild(img);
-imgBox.appendChild(text);
-  })
-  .catch(() => {
-    alert('上传出错');
-  });
-}
 </script>
 
 </body>
