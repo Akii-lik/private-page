@@ -141,22 +141,26 @@ textarea{
 fetch('/friend/list')
   .then(r => r.json())
   .then(list => {
-    if(list.length === 0){
-      document.getElementById('friends').innerHTML =
-        '<div style="opacity:.5">还没有人来坐过。</div>';
+    const box = document.getElementById('friends');
+
+    if (!list || list.length === 0) {
+      box.innerHTML = '<div style="opacity:.5">还没有人来坐过。</div>';
       return;
     }
 
-    document.getElementById('friends').innerHTML =
-      list.map(c => `
-        <div class="glass card">
-          <div class="small">
-            ${c.name}${c.relation ? ' · ' + c.relation : ''}
-            · ${c.date}
-          </div>
-          <pre>${c.content}</pre>
+    box.innerHTML = list.map(c => `
+      <div class="glass card">
+        <div class="small">
+          ${c.name}${c.relation ? ' · ' + c.relation : ''} · ${c.date}
         </div>
-      `).join('');
+        <pre>${c.content}</pre>
+      </div>
+    `).join('');
+  })
+  .catch(err => {
+    document.getElementById('friends').innerHTML =
+      '<div style="opacity:.5">朋友的留言暂时打不开。</div>';
+    console.error(err);
   });
 </script>
   
