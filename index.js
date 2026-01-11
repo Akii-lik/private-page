@@ -204,36 +204,6 @@ function remove(i){
     else alert('密码错误');
   });
 }
-fetch('/friend/list')
-  .then(r => r.json())
-  .then(list => {
-    const box = document.getElementById('friends');
-    if (!box) return;
-
-    if (!list || list.length === 0) {
-      box.innerHTML = '<div style="opacity:.5">还没有朋友来坐过。</div>';
-      return;
-    }
-
-    box.style.opacity = 1;
-    box.innerHTML = list.map(c => `
-      <div class="glass card">
-        <div class="small">
-          ${c.name || '匿名'}
-          ${c.relation ? ' · ' + c.relation : ''}
-          · ${c.date}
-        </div>
-        <pre>${c.content}</pre>
-      </div>
-    `).join('');
-  })
-  .catch(err => {
-    console.error(err);
-    const box = document.getElementById('friends');
-    if (box) {
-      box.innerHTML = '<div style="opacity:.5">朋友的留言暂时无法加载。</div>';
-    }
-  });
 </script>
 
 </body>
