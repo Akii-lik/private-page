@@ -336,9 +336,7 @@ textarea{
 <h3 style="font-weight:normal">喜欢的图</h3>
 
 <div class="glass card">
-  <input type="file" id="imgUpload" accept="image/*">
-  <button onclick="uploadImage()">上传图片</button>
-
+ 
   <div id="imgResult" style="margin-top:12px;"></div>
 </div>
 
@@ -454,13 +452,6 @@ function remove(i){
       }
     });
 })();
-
-function uploadImage(){
-  const fileInput = document.getElementById('imgUpload');
-  if (!fileInput.files.length) {
-    alert('先选一张图片');
-    return;
-  }
 
   const file = fileInput.files[0];
   const formData = new FormData();
