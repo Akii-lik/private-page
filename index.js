@@ -453,6 +453,44 @@ function remove(i){
 </html>`);
 });
 
+// ===== 保存记录 =====
+app.post('/save', (req, res) => {
+  if (!checkPassword(req, res)) return;
+
+  const db = loadDB();
+  const { index, title, content } = req.body;
+
+  if (index === null || index === undefined) {
+    db.records.unshift({
+      title,
+      content,
+      date: new Date().toLocaleDateString()
+    });
+  } else if (db.records[index]) {
+    db.records[index].title = title;
+    db.records[index].content = content;
+  }
+
+  saveDB(db);
+  res.sendStatus(200);
+});
+
+// ===== 删除记录 =====
+app.post('/delete', (req, res) => {
+  if (!checkPassword(req, res)) return;
+
+  const db = loadDB();
+  const { index } = req.body;
+
+  if (db.records[index]) {
+    db.records.splice(index, 1);
+    saveDB(db);
+    res.sendStatus(200);
+  } else {
+    res.status(400).send('不存在的记录');
+  }
+});
+
 // ===== 朋友来坐一会儿 =====
 app.get('/friends', (req, res) => {
   res.send(`
